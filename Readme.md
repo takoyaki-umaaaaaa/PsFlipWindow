@@ -2,7 +2,7 @@
 
 ## これは何か
 
-<img src=".\動作画面.png" alt="動作画面"  style="float: left; width: 35%; margin-right: 30px"/>Web siteでよく見かける、画面要素がカードのように回転する演出。あれが PowerShellでもできると聞き、その実現方法を確認したもの。
+<img src=".\動作画面.png" alt="動作画面"  align="left" style="float: left; width: 35%; margin-right: 30px"/>Web siteでよく見かける、画面要素がカードのように回転する演出。あれが PowerShellでもできると聞き、その実現方法を確認したもの。
 (library や control として提供する目的のものではありません。ハードコードです；´Д｀)💨💨)
 
 裏と表、どちらにもボタンなどの Controlを配置可能で、もちろん押すこともできる(今回は[閉じる]以外は/ダミー)。ただし
