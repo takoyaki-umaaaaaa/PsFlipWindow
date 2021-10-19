@@ -1,8 +1,4 @@
-﻿# 設定画面を起動
-# 保存先フォルダを設定した場合、User環境変数に保持する
-# (そのためregistryに内容が保持される)
-
-# Requires -Version 5.0
+﻿# Requires -Version 5.0
 
 Add-Type -AssemblyName system.windows.forms
 Add-Type -AssemblyName PresentationFramework
@@ -27,16 +23,16 @@ public static extern IntPtr SetThreadDpiAwarenessContext(IntPtr dpiContext);
 [void][Win32.NativeMethods]::SetThreadDpiAwarenessContext(-4)
 
 # Dialog定義を読み込み
-#[xml]$xaml = Get-Content ($PSScriptRoot + "\PsFlipWindow.xaml")
-Import-Module -Name $PSScriptRoot\PsFlipWindow.psm1
-[xml]$xaml  = Xaml_FlipWindow
+#[xml]$xaml = Get-Content ($PSScriptRoot + "\SettingWindow.xaml")
+Import-Module -Name $PSScriptRoot\SettingWindow.psm1
+[xml]$xaml  = Xaml_SettingWindow
 $xamlReader = $xaml -as "System.Xml.XmlNodeReader"
 $flipWnd = [Windows.Markup.XamlReader]::Load( $xamlReader )
 
 
 # Control elementの objectを取得
-$baseWnd = $flipWnd.FindName( "basewindow" )
-$btnClose = $flipWnd.FindName( "button4" )
+$baseWnd = $flipWnd.FindName( "baseWindow" )
+$btnClose = $flipWnd.FindName( $global:Controls[8].Name )
 
 # Event handler登録
 $baseWnd.Add_MouseLeftButtonDown({$baseWnd.DragMove() })
