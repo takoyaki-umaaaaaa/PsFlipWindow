@@ -23,6 +23,29 @@ function Xaml_SettingWindow(){
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		Title="設定画面" Name="baseWindow" Height="650" Width="500" WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize"  MinWidth="400" MinHeight="500" ShowInTaskbar = "True" WindowStartupLocation="CenterScreen" Background="{x:Null}" FontFamily="UD Digi Kyokasho N-R" FontSize="18" Icon="$res_img_background">
+    <Window.Resources>
+        <Storyboard x:Key="StoryFlip">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
+                                           Storyboard.TargetName="rotateY1">
+                <SplineDoubleKeyFrame KeyTime="00:00:01" KeySpline="0,0,0,1" Value="180"></SplineDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
+                                           Storyboard.TargetName="rotateY2">
+                <SplineDoubleKeyFrame KeyTime="00:00:01" KeySpline="0,0,0,1" Value="360"></SplineDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Key="StoryFlipBack">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
+                                           Storyboard.TargetName="rotateY1">
+                <SplineDoubleKeyFrame KeyTime="00:00:01" KeySpline="0,0,0,1" Value="0"></SplineDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
+                                           Storyboard.TargetName="rotateY2">
+                <SplineDoubleKeyFrame KeyTime="00:00:01" KeySpline="0,0,0,1" Value="180"></SplineDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Window.Resources>
 	<Viewport3D>
 		<Viewport3D.Camera>
 			<!-- 				カメラ位置				視野角				視線方向	-->
@@ -36,7 +59,7 @@ function Xaml_SettingWindow(){
 				<RotateTransform3D>
 					<!-- Animationさせたい propertyには名前をつけておく -->
 					<RotateTransform3D.Rotation>
-						<AxisAngleRotation3D  x:Name="rotateB" Angle="0" Axis="0, 1, 0" />
+						<AxisAngleRotation3D  x:Name="rotateY1" Angle="0" Axis="0, 1, 0" />
 					</RotateTransform3D.Rotation>
 				</RotateTransform3D>
 			</Viewport2DVisual3D.Transform>
@@ -56,35 +79,8 @@ function Xaml_SettingWindow(){
 			<!-- 3D Animation設定 -->
 			<Image	x:Name="Back_image1"  Source="$res_img_cover" Stretch="None">
 				<Image.Triggers>
-					<EventTrigger RoutedEvent="FrameworkElement.Loaded">
-						<BeginStoryboard>
-							<Storyboard RepeatBehavior="Forever">
-								<Rotation3DAnimation	Storyboard.TargetName="CardBack"
-														Storyboard.TargetProperty="(Viewport2DVisual3D.Transform).(RotateTransform3D.Rotation)"
-														Duration  ="0:0:2"
-														BeginTime ="0:0:0">
-									<!-- 0～180度まで回転するが、実質見えるのは 0～90度まで。Backface cullingで消えるので。 -->
-									<Rotation3DAnimation.From>
-										<AxisAngleRotation3D Angle="0" Axis="0, 1, 0" />
-									</Rotation3DAnimation.From>
-									<Rotation3DAnimation.To>
-										<AxisAngleRotation3D Angle="180" Axis="0, 1, 0" />
-									</Rotation3DAnimation.To>
-								</Rotation3DAnimation>
-								<!-- 戻りの定義 -->
-								<Rotation3DAnimation	Storyboard.TargetName="CardBack"
-														Storyboard.TargetProperty="(Viewport2DVisual3D.Transform).(RotateTransform3D.Rotation)"
-														Duration ="0:0:2"
-														BeginTime="0:0:2">
-									<Rotation3DAnimation.From>
-										<AxisAngleRotation3D Angle="-180" Axis="0, 1, 0" />
-									</Rotation3DAnimation.From>
-									<Rotation3DAnimation.To>
-										<AxisAngleRotation3D Angle="0" Axis="0, 1, 0" />
-									</Rotation3DAnimation.To>
-								</Rotation3DAnimation>
-							</Storyboard>
-						</BeginStoryboard>
+					<EventTrigger RoutedEvent="FrameworkElement.MouseEnter">
+						<BeginStoryboard Storyboard="{StaticResource StoryFlip}" />
 					</EventTrigger>
 				</Image.Triggers>
 			</Image>
@@ -97,7 +93,7 @@ function Xaml_SettingWindow(){
 					<RotateTransform3D>
 						<RotateTransform3D.Rotation>
 							<!-- Angleに 180を設定しているが、Visual Studioの編集画面でこの要素が消える以上の意味はない。どうせ animation定義で開始角度、終了角度を設定するんだから。 -->
-							<AxisAngleRotation3D  x:Name="rotateF" Angle="180" Axis="0, 1, 0" />
+							<AxisAngleRotation3D  x:Name="rotateY2" Angle="180" Axis="0, 1, 0" />
 						</RotateTransform3D.Rotation>
 					</RotateTransform3D>
 				</Viewport2DVisual3D.Transform>
@@ -116,33 +112,8 @@ function Xaml_SettingWindow(){
 			<!-- Dialog要素で最も根本の Grid controlを回転対象にする。親要素が回れば子要素も回る。ちなみに dialog配置定義の ZIndexは 3Dには反映されない。されれば面白かったかも。 -->
 			<Grid Margin="0,0,0,0" Width="407" Height="434"  ClipToBounds="True">
 				<Grid.Triggers>
-					<EventTrigger RoutedEvent="FrameworkElement.Loaded">
-						<BeginStoryboard>
-							<Storyboard RepeatBehavior="Forever">
-								<Rotation3DAnimation	Storyboard.TargetName="CardFront"
-														Storyboard.TargetProperty="(Viewport2DVisual3D.Transform).(RotateTransform3D.Rotation)"
-														Duration ="0:0:2"
-														BeginTime="0:0:0">
-									<Rotation3DAnimation.From>
-										<AxisAngleRotation3D Angle="-180" Axis="0, 1, 0" />
-									</Rotation3DAnimation.From>
-									<Rotation3DAnimation.To>
-										<AxisAngleRotation3D Angle="0" Axis="0, 1, 0" />
-									</Rotation3DAnimation.To>
-								</Rotation3DAnimation>
-								<Rotation3DAnimation	Storyboard.TargetName="CardFront"
-														Storyboard.TargetProperty="(Viewport2DVisual3D.Transform).(RotateTransform3D.Rotation)"
-														Duration ="0:0:2"
-														BeginTime="0:0:2">
-									<Rotation3DAnimation.From>
-										<AxisAngleRotation3D Angle="0" Axis="0, 1, 0" />
-									</Rotation3DAnimation.From>
-									<Rotation3DAnimation.To>
-										<AxisAngleRotation3D Angle="180" Axis="0, 1, 0" />
-									</Rotation3DAnimation.To>
-								</Rotation3DAnimation>
-							</Storyboard>
-						</BeginStoryboard>
+					<EventTrigger RoutedEvent="FrameworkElement.MouseLeave">
+						<BeginStoryboard Storyboard="{StaticResource StoryFlipBack}" />
 					</EventTrigger>
 				</Grid.Triggers>
 				<Border BorderThickness="0" CornerRadius="30">
