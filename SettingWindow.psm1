@@ -12,7 +12,7 @@ $global:Controls =
 	  [pscustomobject]@{ Name="img_Background";			Content="";								Element=$null})	# 9
 
 function Xaml_SettingWindow(){
-	$res_img_cover		= Join-Path "$PSScriptRoot" "\resource\サラマンカ.jpg"
+	$res_img_cover		= Join-Path "$PSScriptRoot" "\resource\cover.png"
 	$res_img_background	= Join-Path "$PSScriptRoot" "\resource\Gear2.png"
 	$res_ico_delete		= Join-Path "$PSScriptRoot" "\resource\eraser.png"
 	$res_ico_trashcan	= Join-Path "$PSScriptRoot" "\resource\TrashCan.png"
@@ -23,33 +23,41 @@ function Xaml_SettingWindow(){
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		Title="設定画面" Name="baseWindow" Height="650" Width="500" WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize"  MinWidth="400" MinHeight="500" ShowInTaskbar = "True" WindowStartupLocation="CenterScreen" Background="{x:Null}" FontFamily="UD Digi Kyokasho N-R" FontSize="18" Icon="$res_img_background">
-    <Window.Resources>
-        <Storyboard x:Key="StoryFlip">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
-                                           Storyboard.TargetName="rotateY1">
-                <SplineDoubleKeyFrame KeyTime="00:00:01" KeySpline="0,0,0,1" Value="180"></SplineDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
-                                           Storyboard.TargetName="rotateY2">
-                <SplineDoubleKeyFrame KeyTime="00:00:01" KeySpline="0,0,0,1" Value="360"></SplineDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
+	<Window.Resources>
+		<Storyboard x:Key="StoryFlip">
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
+										   Storyboard.TargetName="rotateY1">
+				<SplineDoubleKeyFrame KeyTime="00:00:04" KeySpline="0,0,0,1" Value="180"></SplineDoubleKeyFrame>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
+										   Storyboard.TargetName="rotateY2">
+				<SplineDoubleKeyFrame KeyTime="00:00:04" KeySpline="0,0,0,1" Value="360"></SplineDoubleKeyFrame>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
 
-        <Storyboard x:Key="StoryFlipBack">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
-                                           Storyboard.TargetName="rotateY1">
-                <SplineDoubleKeyFrame KeyTime="00:00:01" KeySpline="0,0,0,1" Value="0"></SplineDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
-                                           Storyboard.TargetName="rotateY2">
-                <SplineDoubleKeyFrame KeyTime="00:00:01" KeySpline="0,0,0,1" Value="180"></SplineDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-    </Window.Resources>
-	<Viewport3D>
+		<Storyboard x:Key="StoryFlipBack">
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
+										   Storyboard.TargetName="rotateY1">
+				<SplineDoubleKeyFrame KeyTime="00:00:02" KeySpline="0,0,0,1" Value="0"></SplineDoubleKeyFrame>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
+										   Storyboard.TargetName="rotateY2">
+				<SplineDoubleKeyFrame KeyTime="00:00:02" KeySpline="0,0,0,1" Value="180"></SplineDoubleKeyFrame>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+	</Window.Resources>
+	<Viewport3D RenderTransformOrigin="0.5,0.5">
+		<Viewport3D.RenderTransform>
+			<TransformGroup>
+				<ScaleTransform ScaleY="1.07"/>
+				<SkewTransform/>
+				<RotateTransform/>
+				<TranslateTransform/>
+			</TransformGroup>
+		</Viewport3D.RenderTransform>
 		<Viewport3D.Camera>
 			<!-- 				カメラ位置				視野角				視線方向	-->
-			<PerspectiveCamera x:Name="Camera"	Position="0, 0, 2.7"	FieldOfView="45"	LookDirection="0, 0, -1"/>
+			<PerspectiveCamera x:Name="Camera"	Position="0, 0, 2.97"	FieldOfView="45"	LookDirection="0, 0, -1"/>
 		</Viewport3D.Camera>
 
 		<Viewport2DVisual3D  x:Name="CardBack">
@@ -77,8 +85,11 @@ function Xaml_SettingWindow(){
 			</Viewport2DVisual3D.Material>
 			<!-- 3D表示設定ここまで -->
 			<!-- 3D Animation設定 -->
-			<Image	x:Name="Back_image1"  Source="$res_img_cover" Stretch="None">
+			<Image	x:Name="Back_image1"  Source="$res_img_cover" Stretch="None" >
 				<Image.Triggers>
+					<EventTrigger RoutedEvent="FrameworkElement.Loaded">
+						<BeginStoryboard Storyboard="{StaticResource StoryFlip}" />
+					</EventTrigger>
 					<EventTrigger RoutedEvent="FrameworkElement.MouseEnter">
 						<BeginStoryboard Storyboard="{StaticResource StoryFlip}" />
 					</EventTrigger>
@@ -88,7 +99,6 @@ function Xaml_SettingWindow(){
 
 		<!-- カードのもう一面の定義。基本的には上の定義と同じ。 -->
 		<Viewport2DVisual3D  x:Name="CardFront">
-				<!-- Give the plane a slight rotation -->
 				<Viewport2DVisual3D.Transform>
 					<RotateTransform3D>
 						<RotateTransform3D.Rotation>
@@ -110,7 +120,7 @@ function Xaml_SettingWindow(){
 				</Viewport2DVisual3D.Material>
 
 			<!-- Dialog要素で最も根本の Grid controlを回転対象にする。親要素が回れば子要素も回る。ちなみに dialog配置定義の ZIndexは 3Dには反映されない。されれば面白かったかも。 -->
-			<Grid Margin="0,0,0,0" Width="407" Height="434"  ClipToBounds="True">
+			<Grid Name="grid" Margin="0,0,0,0" Width="407" Height="434"  ClipToBounds="True">
 				<Grid.Triggers>
 					<EventTrigger RoutedEvent="FrameworkElement.MouseLeave">
 						<BeginStoryboard Storyboard="{StaticResource StoryFlipBack}" />
