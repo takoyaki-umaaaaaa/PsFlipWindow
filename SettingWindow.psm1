@@ -24,14 +24,24 @@ function Xaml_SettingWindow(){
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		Title="設定画面" Name="baseWindow" Height="650" Width="500" WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize"  MinWidth="400" MinHeight="500" ShowInTaskbar = "True" WindowStartupLocation="CenterScreen" Background="{x:Null}" FontFamily="UD Digi Kyokasho N-R" FontSize="18" Icon="$res_img_background">
 	<Window.Resources>
-		<Storyboard x:Key="StoryFlip">
+		<Storyboard x:Key="StoryLinear">
 			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
 										   Storyboard.TargetName="rotateY1">
-				<SplineDoubleKeyFrame KeyTime="00:00:04" KeySpline="0,0,0,1" Value="180"></SplineDoubleKeyFrame>
+				<LinearDoubleKeyFrame KeyTime="00:00:04" Value="180"></LinearDoubleKeyFrame>
 			</DoubleAnimationUsingKeyFrames>
 			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
 										   Storyboard.TargetName="rotateY2">
-				<SplineDoubleKeyFrame KeyTime="00:00:04" KeySpline="0,0,0,1" Value="360"></SplineDoubleKeyFrame>
+				<LinearDoubleKeyFrame KeyTime="00:00:04" Value="360"></LinearDoubleKeyFrame>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Key="StoryFlip">
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
+										   Storyboard.TargetName="rotateY1">
+				<SplineDoubleKeyFrame KeyTime="00:00:02" KeySpline="0,0,0,1" Value="180"></SplineDoubleKeyFrame>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
+										   Storyboard.TargetName="rotateY2">
+				<SplineDoubleKeyFrame KeyTime="00:00:02" KeySpline="0,0,0,1" Value="360"></SplineDoubleKeyFrame>
 			</DoubleAnimationUsingKeyFrames>
 		</Storyboard>
 
@@ -88,7 +98,7 @@ function Xaml_SettingWindow(){
 			<Image	x:Name="Back_image1"  Source="$res_img_cover" Stretch="None" >
 				<Image.Triggers>
 					<EventTrigger RoutedEvent="FrameworkElement.Loaded">
-						<BeginStoryboard Storyboard="{StaticResource StoryFlip}" />
+						<BeginStoryboard Storyboard="{StaticResource StoryLinear}" />
 					</EventTrigger>
 					<EventTrigger RoutedEvent="FrameworkElement.MouseEnter">
 						<BeginStoryboard Storyboard="{StaticResource StoryFlip}" />
@@ -153,12 +163,6 @@ function Xaml_SettingWindow(){
 					<StackPanel Orientation="Horizontal">
 						<Image x:Name="image2" Source="$res_ico_start" Margin="5,5,0,5" Height="22" Width="22"/>
 						<Label x:Name="label2" Content="$($global:Controls[6].Content)" VerticalContentAlignment="Center"/>
-					</StackPanel>
-				</Button>
-				<Button		x:Name="$($global:Controls[7].Name)"												Margin=" 40,327,  0,  0"	HorizontalAlignment="Left"	VerticalAlignment="Top"		Height="42"		Width="300"		Background="White"		Cursor="Hand"	BorderBrush="Red" >
-					<StackPanel Orientation="Horizontal">
-						<Image x:Name="image3" Source="$res_ico_trashcan" Margin="5,5,0,5" Height="30" Width="30"/>
-						<Label x:Name="label3" Content="$($global:Controls[7].Content)" VerticalContentAlignment="Center" 	Foreground="Red"/>
 					</StackPanel>
 				</Button>
 				<Button		x:Name="$($global:Controls[8].Name)"												Margin="  0,  0, 40, 31"	HorizontalAlignment="Right" VerticalAlignment="Bottom"	Height="64"		Width="150"		Background="White"		Cursor="Hand"	IsDefault="True" >
