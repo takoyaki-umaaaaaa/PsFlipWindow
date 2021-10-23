@@ -13,8 +13,11 @@
 
 ## 動作環境
 
+動作環境というより、動作確認した環境；´Д｀)
+
 - PowerShell 5.1 (Windows 11標準のもの)
-- Windows 11
+- Windows 10 or 11
+- .Net Framework 4.7
 - WPF (Xaml)による画面表示
 
 ## 実行方法
@@ -26,12 +29,10 @@ PS> Remove-Item PsFlipWindow-master.zip -Stream Zone.Identifier
 ```
 2. **Zipを解凍する**  
     好きな方法で。
-3. **Scriptを実行する**   
-```powershell
-PS> powershell -ExecutionPolicy RemoteSigned -File ".\PsFlipWindow.ps1"
-```
+1. **Scriptを実行する**   
+`PsFlipWindow.bat`をダブルクリック
 
-くるくる回る windowが出てくればOK。
+しばらく待って、設定dialogが出てくればOK。
 
 ## 操作方法
 
@@ -39,8 +40,9 @@ PS> powershell -ExecutionPolicy RemoteSigned -File ".\PsFlipWindow.ps1"
 	<dt><strong>ウィンドウの移動</strong></dt>
 	<dd>ボタンなどの要素が無い場所をマウスドラッグ🖱️で移動</dd>
 	<dt><strong>終了方法</strong></dt>
-	<dd>[閉じる]ボタンを頑張って押す；´Д｀)</dd>
+	<dd>[閉じる]ボタンを押す</dd>
 </dl>
+
 ## 参考リンク
 
 * [Animation **しない** Viewport3D のサンプル](https://docs.microsoft.com/en-us/dotnet/api/system.windows.media.media3d.viewport2dvisual3d?redirectedfrom=MSDN&view=windowsdesktop-5.0) (microsoft)
